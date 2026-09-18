@@ -1,6 +1,6 @@
 // pwa-register.js
 // À inclure une seule fois, juste avant </body>, avec :
-// <script src="/pwa-register.js"></script>
+// <script src="pwa-register.js"></script>
 //
 // Ce fichier fait deux choses :
 // 1) Enregistre le Service Worker (nécessaire pour l'installation ET le mode hors ligne).
@@ -11,10 +11,14 @@
 // ============================================================
 // 1) ENREGISTREMENT DU SERVICE WORKER
 // ============================================================
+// Chemin relatif : fonctionne aussi bien à la racine du domaine
+// (tonpseudo.github.io) que dans un sous-dossier de projet
+// (tonpseudo.github.io/nom-du-depot/). Le scope du Service Worker
+// sera automatiquement le dossier où se trouve ce script.
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker
-            .register('/service-worker.js')
+            .register('service-worker.js')
             .then((reg) => console.log('Service Worker enregistré :', reg.scope))
             .catch((err) => console.error('Erreur Service Worker :', err));
     });
