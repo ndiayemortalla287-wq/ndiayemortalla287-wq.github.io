@@ -1,0 +1,32 @@
+{
+  "name": "Association Teranga",
+  "short_name": "Teranga",
+  "description": "Créez votre association en ligne : cartes de membre, cotisations, réunions et adhésions, gratuitement.",
+  "start_url": "/?page=directory",
+  "scope": "/",
+  "id": "/?page=directory",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F4EFE3",
+  "theme_color": "#121B30",
+  "lang": "fr-FR",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": [
+    "social",
+    "productivity"
+  ]
+}
