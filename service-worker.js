@@ -6,19 +6,24 @@
 
 const CACHE_NAME = 'teranga-cache-v2';
 
+// Chemin de base déduit automatiquement de l'emplacement de ce fichier.
+// Sur un dépôt racine (tonpseudo.github.io) ça vaut "/".
+// Sur un dépôt projet (tonpseudo.github.io/nom-du-depot/) ça vaut "/nom-du-depot/".
+const BASE_PATH = self.registration.scope;
+
 // Liste de fichiers statiques à mettre en cache dès l'installation.
 // ⚠️ Ces chemins doivent correspondre à des fichiers qui existent réellement
-// à la racine du site.
+// à la racine du site (ou du sous-dossier, selon BASE_PATH).
 const STATIC_ASSETS = [
-  '/offline.html',
-  '/manifest.json',
-  '/favicon.svg',
-  '/favicon-96x96.png',
-  '/favicon.ico',
-  '/apple-touch-icon.png',
-  '/web-app-manifest-192x192.png',
-  '/web-app-manifest-512x512.png'
-];
+  'offline.html',
+  'manifest.json',
+  'favicon.svg',
+  'favicon-96x96.png',
+  'favicon.ico',
+  'apple-touch-icon.png',
+  'web-app-manifest-192x192.png',
+  'web-app-manifest-512x512.png'
+].map((path) => new URL(path, BASE_PATH).href);
 
 // ============================================================
 // INSTALLATION : on met en cache les fichiers statiques essentiels.
@@ -77,7 +82,7 @@ self.addEventListener('fetch', (event) => {
   //    on affiche une page offline.html générique.
   if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(request).catch(() => caches.match('/offline.html'))
+      fetch(request).catch(() => caches.match(new URL('offline.html', BASE_PATH).href))
     );
     return;
   }
@@ -86,7 +91,7 @@ self.addEventListener('fetch', (event) => {
   //    on sert depuis le cache si présent, sinon on va au réseau et on
   //    met en cache la réponse pour la prochaine fois.
   if (
-    url.pathname.startsWith('/uploads/') ||
+    url.pathname.startsWith(new URL('uploads/', BASE_PATH).pathname) ||
     request.destination === 'image' ||
     request.destination === 'font' ||
     request.destination === 'style'
