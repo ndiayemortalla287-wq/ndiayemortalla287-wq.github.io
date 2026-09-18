@@ -1,21 +1,355 @@
-<!DOCTYPE html>
-<html lang="fr">
+<!DOCTYPE html><html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Association Teranga</title>
 
-    <title>Association Teranga</title>
+<meta name="theme-color" content="#F4EFE3">
 
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#F4EFE3">
-</head>
+<link rel="manifest" href="manifest.json">
 
-<body>
-    <h1>Association Teranga</h1>
-    <p>Ouverture de l'application...</p>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-    <script>
-        window.location.href = "https://assoteranga.page.gd/";
-    </script>
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background:
+            radial-gradient(circle at 20% 20%, rgba(255,255,255,0.9), transparent 30%),
+            radial-gradient(circle at 80% 80%, rgba(18,27,48,0.08), transparent 35%),
+            #F4EFE3;
+        color: #121B30;
+        overflow: hidden;
+    }
+
+    /* Écran principal */
+    .welcome-screen {
+        min-height: 100vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 25px;
+    }
+
+    /* Décoration arrière */
+    .circle {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0.15;
+        pointer-events: none;
+    }
+
+    .circle-one {
+        width: 220px;
+        height: 220px;
+        background: #121B30;
+        top: -90px;
+        left: -80px;
+    }
+
+    .circle-two {
+        width: 280px;
+        height: 280px;
+        background: #121B30;
+        right: -130px;
+        bottom: -120px;
+    }
+
+    .circle-three {
+        width: 90px;
+        height: 90px;
+        border: 2px solid #121B30;
+        top: 18%;
+        right: 12%;
+        opacity: 0.25;
+    }
+
+    /* Carte centrale */
+    .welcome-card {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 440px;
+        padding: 42px 28px 38px;
+        text-align: center;
+        background: rgba(255,255,255,0.82);
+        border: 1px solid rgba(255,255,255,0.9);
+        border-radius: 28px;
+        box-shadow:
+            0 20px 60px rgba(18,27,48,0.12);
+        backdrop-filter: blur(12px);
+
+        animation: cardAppear 0.8s ease-out;
+    }
+
+    /* Logo */
+    .logo {
+        width: 110px;
+        height: 110px;
+        margin: 0 auto 24px;
+        border-radius: 50%;
+        background: #121B30;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow:
+            0 12px 30px rgba(18,27,48,0.22);
+
+        animation: logoAppear 0.9s ease-out;
+    }
+
+    .logo-inner {
+        color: #F4EFE3;
+        font-size: 17px;
+        font-weight: bold;
+        line-height: 1.25;
+        letter-spacing: 0.3px;
+    }
+
+    /* Textes */
+    .small-title {
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #687080;
+        margin-bottom: 8px;
+    }
+
+    h1 {
+        font-size: 29px;
+        line-height: 1.2;
+        margin-bottom: 12px;
+    }
+
+    .description {
+        font-size: 15px;
+        line-height: 1.6;
+        color: #606775;
+        margin-bottom: 28px;
+    }
+
+    /* Chargement */
+    .loading-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .loader {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        border: 4px solid rgba(18,27,48,0.12);
+        border-top-color: #121B30;
+        animation: spin 0.8s linear infinite;
+    }
+
+    .loading-text {
+        margin-top: 14px;
+        font-size: 13px;
+        color: #777;
+    }
+
+    /* Barre de progression */
+    .progress {
+        width: 100%;
+        height: 4px;
+        background: rgba(18,27,48,0.09);
+        border-radius: 20px;
+        overflow: hidden;
+        margin-top: 22px;
+    }
+
+    .progress-bar {
+        height: 100%;
+        width: 0%;
+        background: #121B30;
+        border-radius: 20px;
+        animation: progress 2s linear forwards;
+    }
+
+    /* Bouton de secours */
+    .open-button {
+        display: none;
+        margin: 22px auto 0;
+        padding: 13px 22px;
+        border-radius: 12px;
+        background: #121B30;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    /* Animations */
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes progress {
+        from {
+            width: 0%;
+        }
+
+        to {
+            width: 100%;
+        }
+    }
+
+    @keyframes cardAppear {
+        from {
+            opacity: 0;
+            transform: translateY(25px) scale(0.97);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @keyframes logoAppear {
+        from {
+            opacity: 0;
+            transform: scale(0.7);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    /* Téléphone */
+    @media (max-width: 480px) {
+
+        .welcome-screen {
+            padding: 18px;
+        }
+
+        .welcome-card {
+            padding: 36px 22px 32px;
+            border-radius: 25px;
+        }
+
+        .logo {
+            width: 95px;
+            height: 95px;
+        }
+
+        .logo-inner {
+            font-size: 15px;
+        }
+
+        h1 {
+            font-size: 25px;
+        }
+
+        .description {
+            font-size: 14px;
+        }
+    }
+</style>
+
+</head><body><main class="welcome-screen">
+
+    <!-- Décorations -->
+    <div class="circle circle-one"></div>
+    <div class="circle circle-two"></div>
+    <div class="circle circle-three"></div>
+
+    <!-- Carte de bienvenue -->
+    <section class="welcome-card">
+
+        <div class="logo">
+            <div class="logo-inner">
+                Association<br>
+                Teranga
+            </div>
+        </div>
+
+        <div class="small-title">
+            Bienvenue
+        </div>
+
+        <h1>
+            Association Teranga
+        </h1>
+
+        <p class="description">
+            Votre espace associatif simple,
+            moderne et accessible.
+        </p>
+
+        <div class="loading-area">
+
+            <div class="loader"></div>
+
+            <div class="loading-text">
+                Ouverture de votre espace...
+            </div>
+
+            <div class="progress">
+                <div class="progress-bar"></div>
+            </div>
+
+        </div>
+
+        <a
+            id="openButton"
+            class="open-button"
+            href="https://assoteranga.page.gd/">
+            Ouvrir Association Teranga
+        </a>
+
+    </section>
+
+</main>
+
+<script>
+
+    /*
+     * Adresse de ton application principale
+     */
+    const APP_URL = "https://assoteranga.page.gd/";
+
+    /*
+     * Ouverture automatique après 2 secondes
+     */
+    setTimeout(function () {
+
+        window.location.replace(APP_URL);
+
+    }, 2000);
+
+    /*
+     * Si la redirection rencontre un problème,
+     * afficher un bouton après quelques secondes.
+     */
+    setTimeout(function () {
+
+        const button = document.getElementById("openButton");
+
+        if (button) {
+            button.style.display = "inline-block";
+        }
+
+    }, 3500);
+
+</script>
+
 </body>
 </html>
