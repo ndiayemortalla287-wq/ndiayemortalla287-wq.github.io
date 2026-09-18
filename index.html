@@ -1,24 +1,24 @@
-<!DOCTYPE html><html lang="fr">
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Association Teranga</title>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Association Teranga</title>
 <meta name="theme-color" content="#F4EFE3">
+
+<!-- Redirection de secours si le JavaScript est désactivé -->
+<meta http-equiv="refresh" content="1;url=https://assoteranga.page.gd/">
+
+<!-- Prépare la connexion au serveur pendant l'affichage de la page -->
+<link rel="preconnect" href="https://assoteranga.page.gd" crossorigin>
+<link rel="dns-prefetch" href="https://assoteranga.page.gd">
 
 <link rel="manifest" href="manifest.json">
 
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    html,
-    body {
-        width: 100%;
-        height: 100%;
-    }
+    html, body { width: 100%; height: 100%; }
 
     body {
         font-family: Arial, Helvetica, sans-serif;
@@ -30,7 +30,6 @@
         overflow: hidden;
     }
 
-    /* Écran principal */
     .welcome-screen {
         min-height: 100vh;
         width: 100%;
@@ -41,7 +40,6 @@
         padding: 25px;
     }
 
-    /* Décoration arrière */
     .circle {
         position: absolute;
         border-radius: 50%;
@@ -50,31 +48,24 @@
     }
 
     .circle-one {
-        width: 220px;
-        height: 220px;
+        width: 220px; height: 220px;
         background: #121B30;
-        top: -90px;
-        left: -80px;
+        top: -90px; left: -80px;
     }
 
     .circle-two {
-        width: 280px;
-        height: 280px;
+        width: 280px; height: 280px;
         background: #121B30;
-        right: -130px;
-        bottom: -120px;
+        right: -130px; bottom: -120px;
     }
 
     .circle-three {
-        width: 90px;
-        height: 90px;
+        width: 90px; height: 90px;
         border: 2px solid #121B30;
-        top: 18%;
-        right: 12%;
+        top: 18%; right: 12%;
         opacity: 0.25;
     }
 
-    /* Carte centrale */
     .welcome-card {
         position: relative;
         z-index: 2;
@@ -85,27 +76,21 @@
         background: rgba(255,255,255,0.82);
         border: 1px solid rgba(255,255,255,0.9);
         border-radius: 28px;
-        box-shadow:
-            0 20px 60px rgba(18,27,48,0.12);
+        box-shadow: 0 20px 60px rgba(18,27,48,0.12);
         backdrop-filter: blur(12px);
-
-        animation: cardAppear 0.8s ease-out;
+        animation: cardAppear 0.4s ease-out;
     }
 
-    /* Logo */
     .logo {
-        width: 110px;
-        height: 110px;
+        width: 110px; height: 110px;
         margin: 0 auto 24px;
         border-radius: 50%;
         background: #121B30;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow:
-            0 12px 30px rgba(18,27,48,0.22);
-
-        animation: logoAppear 0.9s ease-out;
+        box-shadow: 0 12px 30px rgba(18,27,48,0.22);
+        animation: logoAppear 0.5s ease-out;
     }
 
     .logo-inner {
@@ -116,7 +101,6 @@
         letter-spacing: 0.3px;
     }
 
-    /* Textes */
     .small-title {
         font-size: 14px;
         font-weight: 600;
@@ -139,7 +123,6 @@
         margin-bottom: 28px;
     }
 
-    /* Chargement */
     .loading-area {
         display: flex;
         flex-direction: column;
@@ -147,8 +130,7 @@
     }
 
     .loader {
-        width: 42px;
-        height: 42px;
+        width: 42px; height: 42px;
         border-radius: 50%;
         border: 4px solid rgba(18,27,48,0.12);
         border-top-color: #121B30;
@@ -161,25 +143,6 @@
         color: #777;
     }
 
-    /* Barre de progression */
-    .progress {
-        width: 100%;
-        height: 4px;
-        background: rgba(18,27,48,0.09);
-        border-radius: 20px;
-        overflow: hidden;
-        margin-top: 22px;
-    }
-
-    .progress-bar {
-        height: 100%;
-        width: 0%;
-        background: #121B30;
-        border-radius: 20px;
-        animation: progress 2s linear forwards;
-    }
-
-    /* Bouton de secours */
     .open-button {
         display: none;
         margin: 22px auto 0;
@@ -192,86 +155,51 @@
         font-size: 14px;
     }
 
-    /* Animations */
-    @keyframes spin {
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    @keyframes progress {
-        from {
-            width: 0%;
-        }
-
-        to {
-            width: 100%;
-        }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     @keyframes cardAppear {
-        from {
-            opacity: 0;
-            transform: translateY(25px) scale(0.97);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
+        from { opacity: 0; transform: translateY(25px) scale(0.97); }
+        to   { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     @keyframes logoAppear {
-        from {
-            opacity: 0;
-            transform: scale(0.7);
-        }
-
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
+        from { opacity: 0; transform: scale(0.7); }
+        to   { opacity: 1; transform: scale(1); }
     }
 
-    /* Téléphone */
     @media (max-width: 480px) {
-
-        .welcome-screen {
-            padding: 18px;
-        }
-
-        .welcome-card {
-            padding: 36px 22px 32px;
-            border-radius: 25px;
-        }
-
-        .logo {
-            width: 95px;
-            height: 95px;
-        }
-
-        .logo-inner {
-            font-size: 15px;
-        }
-
-        h1 {
-            font-size: 25px;
-        }
-
-        .description {
-            font-size: 14px;
-        }
+        .welcome-screen { padding: 18px; }
+        .welcome-card { padding: 36px 22px 32px; border-radius: 25px; }
+        .logo { width: 95px; height: 95px; }
+        .logo-inner { font-size: 15px; }
+        h1 { font-size: 25px; }
+        .description { font-size: 14px; }
     }
 </style>
 
-</head><body><main class="welcome-screen">
+<script>
+    /*
+     * Adresse de l'application principale.
+     */
+    var APP_URL = "https://assoteranga.page.gd/";
 
-    <!-- Décorations -->
+    /*
+     * Redirection immédiate, dès la lecture du <head>.
+     * Le navigateur n'attend même pas l'affichage complet de la page :
+     * c'est le point le plus rapide possible pour partir.
+     */
+    window.location.replace(APP_URL);
+</script>
+
+</head>
+<body>
+
+<main class="welcome-screen">
+
     <div class="circle circle-one"></div>
     <div class="circle circle-two"></div>
     <div class="circle circle-three"></div>
 
-    <!-- Carte de bienvenue -->
     <section class="welcome-card">
 
         <div class="logo">
@@ -281,13 +209,9 @@
             </div>
         </div>
 
-        <div class="small-title">
-            Bienvenue
-        </div>
+        <div class="small-title">Bienvenue</div>
 
-        <h1>
-            Association Teranga
-        </h1>
+        <h1>Association Teranga</h1>
 
         <p class="description">
             Votre espace associatif simple,
@@ -295,23 +219,11 @@
         </p>
 
         <div class="loading-area">
-
             <div class="loader"></div>
-
-            <div class="loading-text">
-                Ouverture de votre espace...
-            </div>
-
-            <div class="progress">
-                <div class="progress-bar"></div>
-            </div>
-
+            <div class="loading-text">Ouverture de votre espace...</div>
         </div>
 
-        <a
-            id="openButton"
-            class="open-button"
-            href="https://assoteranga.page.gd/">
+        <a id="openButton" class="open-button" href="https://assoteranga.page.gd/">
             Ouvrir Association Teranga
         </a>
 
@@ -320,35 +232,18 @@
 </main>
 
 <script>
-
     /*
-     * Adresse de ton application principale
-     */
-    const APP_URL = "https://assoteranga.page.gd/";
-
-    /*
-     * Ouverture automatique après 2 secondes
+     * Si la redirection n'a pas abouti au bout de 4 secondes
+     * (serveur lent, coupure réseau), on propose le bouton manuel.
      */
     setTimeout(function () {
-
-        window.location.replace(APP_URL);
-
-    }, 2000);
-
-    /*
-     * Si la redirection rencontre un problème,
-     * afficher un bouton après quelques secondes.
-     */
-    setTimeout(function () {
-
-        const button = document.getElementById("openButton");
-
+        var button = document.getElementById("openButton");
         if (button) {
             button.style.display = "inline-block";
+            document.querySelector(".loading-text").textContent =
+                "L'ouverture prend plus de temps que prévu.";
         }
-
-    }, 3500);
-
+    }, 4000);
 </script>
 
 </body>
