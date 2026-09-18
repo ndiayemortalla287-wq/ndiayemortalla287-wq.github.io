@@ -298,6 +298,19 @@
 <script>
 (function () {
     var APP_URL = "https://assotranga.page.gd/";
+    var LAST_PAGE_KEY = "terangaLastPage";
+
+    // Reprend l'utilisateur là où il s'est arrêté la dernière fois,
+    // au lieu de toujours ouvrir la page d'accueil.
+    function getRedirectTarget() {
+        try {
+            var saved = localStorage.getItem(LAST_PAGE_KEY);
+            if (saved && saved.indexOf("https://assotranga.page.gd") === 0) {
+                return saved;
+            }
+        } catch (e) {}
+        return APP_URL;
+    }
 
     // L'application est déjà installée si elle tourne en mode "standalone"
     var isStandalone =
@@ -324,7 +337,7 @@
     function goToApp() {
         if (redirected) return;
         redirected = true;
-        window.location.replace(APP_URL);
+        window.location.replace(getRedirectTarget());
     }
 
     // Si le logo ne se charge pas, on affiche les initiales à la place
