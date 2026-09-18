@@ -6,9 +6,6 @@
 <title>Association Teranga</title>
 <meta name="theme-color" content="#F4EFE3">
 
-<!-- Redirection de secours si le JavaScript est désactivé -->
-<meta http-equiv="refresh" content="1;url=https://assotranga.page.gd/">
-
 <!-- Prépare la connexion au serveur pendant l'affichage de la page -->
 <link rel="preconnect" href="https://assotranga.page.gd" crossorigin>
 <link rel="dns-prefetch" href="https://assotranga.page.gd">
@@ -47,24 +44,9 @@
         pointer-events: none;
     }
 
-    .circle-one {
-        width: 220px; height: 220px;
-        background: #121B30;
-        top: -90px; left: -80px;
-    }
-
-    .circle-two {
-        width: 280px; height: 280px;
-        background: #121B30;
-        right: -130px; bottom: -120px;
-    }
-
-    .circle-three {
-        width: 90px; height: 90px;
-        border: 2px solid #121B30;
-        top: 18%; right: 12%;
-        opacity: 0.25;
-    }
+    .circle-one { width: 220px; height: 220px; background: #121B30; top: -90px; left: -80px; }
+    .circle-two { width: 280px; height: 280px; background: #121B30; right: -130px; bottom: -120px; }
+    .circle-three { width: 90px; height: 90px; border: 2px solid #121B30; top: 18%; right: 12%; opacity: 0.25; }
 
     .welcome-card {
         position: relative;
@@ -78,7 +60,7 @@
         border-radius: 28px;
         box-shadow: 0 20px 60px rgba(18,27,48,0.12);
         backdrop-filter: blur(12px);
-        animation: cardAppear 0.4s ease-out;
+        animation: cardAppear 0.6s ease-out;
     }
 
     .logo {
@@ -90,7 +72,7 @@
         align-items: center;
         justify-content: center;
         box-shadow: 0 12px 30px rgba(18,27,48,0.22);
-        animation: logoAppear 0.5s ease-out;
+        animation: logoAppear 0.7s ease-out;
     }
 
     .logo-inner {
@@ -110,23 +92,22 @@
         margin-bottom: 8px;
     }
 
-    h1 {
-        font-size: 29px;
-        line-height: 1.2;
-        margin-bottom: 12px;
-    }
+    h1 { font-size: 29px; line-height: 1.2; margin-bottom: 12px; }
 
     .description {
         font-size: 15px;
         line-height: 1.6;
         color: #606775;
-        margin-bottom: 28px;
+        margin-bottom: 22px;
     }
 
-    .loading-area {
+    /* Zone qui change de contenu selon l'étape (chargement / install / iOS) */
+    .stage {
+        min-height: 130px;
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
     }
 
     .loader {
@@ -143,25 +124,66 @@
         color: #777;
     }
 
-    .open-button {
-        display: none;
-        margin: 22px auto 0;
-        padding: 13px 22px;
-        border-radius: 12px;
-        background: #121B30;
-        color: white;
-        text-decoration: none;
-        font-weight: bold;
+    .install-icon { font-size: 34px; margin-bottom: 10px; }
+
+    .install-text {
         font-size: 14px;
+        color: #444;
+        margin-bottom: 16px;
+        line-height: 1.5;
     }
 
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: none;
+        border-radius: 50px;
+        padding: 12px 22px;
+        font-size: 14px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+    }
 
+    .btn-primary {
+        background: #121B30;
+        color: #fff;
+        box-shadow: 0 8px 20px rgba(18,27,48,0.28);
+    }
+
+    .btn-link {
+        background: transparent;
+        color: #687080;
+        font-weight: 600;
+        text-decoration: underline;
+        margin-top: 14px;
+        padding: 4px;
+    }
+
+    .progress {
+        width: 100%;
+        height: 3px;
+        background: rgba(18,27,48,0.09);
+        border-radius: 20px;
+        overflow: hidden;
+        margin-top: 26px;
+    }
+
+    .progress-bar {
+        height: 100%;
+        width: 0%;
+        background: #121B30;
+        border-radius: 20px;
+    }
+
+    .hidden { display: none !important; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes cardAppear {
         from { opacity: 0; transform: translateY(25px) scale(0.97); }
         to   { opacity: 1; transform: translateY(0) scale(1); }
     }
-
     @keyframes logoAppear {
         from { opacity: 0; transform: scale(0.7); }
         to   { opacity: 1; transform: scale(1); }
@@ -177,20 +199,6 @@
     }
 </style>
 
-<script>
-    /*
-     * Adresse de l'application principale.
-     */
-    var APP_URL = "https://assotranga.page.gd/";
-
-    /*
-     * Redirection immédiate, dès la lecture du <head>.
-     * Le navigateur n'attend même pas l'affichage complet de la page :
-     * c'est le point le plus rapide possible pour partir.
-     */
-    window.location.replace(APP_URL);
-</script>
-
 </head>
 <body>
 
@@ -203,47 +211,140 @@
     <section class="welcome-card">
 
         <div class="logo">
-            <div class="logo-inner">
-                Association<br>
-                Teranga
-            </div>
+            <div class="logo-inner">Association<br>Teranga</div>
         </div>
 
         <div class="small-title">Bienvenue</div>
-
         <h1>Association Teranga</h1>
-
         <p class="description">
             Votre espace associatif simple,
             moderne et accessible.
         </p>
 
-        <div class="loading-area">
+        <!-- Étape 1 : chargement -->
+        <div id="stageLoading" class="stage">
             <div class="loader"></div>
-            <div class="loading-text">Ouverture de votre espace...</div>
+            <div class="loading-text">Préparation de votre espace...</div>
         </div>
 
-        <a id="openButton" class="open-button" href="https://assotranga.page.gd/">
-            Ouvrir Association Teranga
-        </a>
+        <!-- Étape 2 : proposition d'installation (Android / Chrome) -->
+        <div id="stageInstall" class="stage hidden">
+            <div class="install-icon">📲</div>
+            <div class="install-text">
+                Installez l'application sur votre appareil<br>
+                pour y accéder plus rapidement.
+            </div>
+            <button id="installBtn" class="btn btn-primary">Installer l'application</button>
+        </div>
+
+        <!-- Étape 2 bis : instructions iPhone (Safari ne propose pas d'installation automatique) -->
+        <div id="stageIos" class="stage hidden">
+            <div class="install-icon">📲</div>
+            <div class="install-text">
+                Pour installer l'application sur iPhone :<br>
+                appuyez sur <strong>Partager</strong> ⬆️ puis<br>
+                <strong>« Sur l'écran d'accueil »</strong>.
+            </div>
+        </div>
+
+        <button id="skipBtn" class="btn-link">Continuer sans installer</button>
+
+        <div class="progress">
+            <div id="progressBar" class="progress-bar"></div>
+        </div>
 
     </section>
 
 </main>
 
 <script>
-    /*
-     * Si la redirection n'a pas abouti au bout de 4 secondes
-     * (serveur lent, coupure réseau), on propose le bouton manuel.
-     */
+(function () {
+    var APP_URL = "https://assotranga.page.gd/";
+
+    // Durées de chaque étape (en millisecondes)
+    var WELCOME_DURATION = 2500;   // "Bienvenue..." + décorations
+    var INSTALL_WINDOW    = 6000;  // fenêtre laissée pour installer
+    var TOTAL_DURATION    = WELCOME_DURATION + INSTALL_WINDOW;
+
+    var stageLoading = document.getElementById('stageLoading');
+    var stageInstall = document.getElementById('stageInstall');
+    var stageIos      = document.getElementById('stageIos');
+    var installBtn    = document.getElementById('installBtn');
+    var skipBtn        = document.getElementById('skipBtn');
+    var progressBar    = document.getElementById('progressBar');
+
+    var deferredPrompt = null;
+    var redirected = false;
+    var redirectTimer = null;
+
+    function goToApp() {
+        if (redirected) return;
+        redirected = true;
+        window.location.replace(APP_URL);
+    }
+
+    // Barre de progression visuelle sur toute la durée d'attente
+    progressBar.style.transition = 'width ' + TOTAL_DURATION + 'ms linear';
+    requestAnimationFrame(function () {
+        progressBar.style.width = '100%';
+    });
+
+    // Redirection automatique en secours, quoi qu'il arrive
+    redirectTimer = setTimeout(goToApp, TOTAL_DURATION);
+
+    // Bouton "Continuer sans installer" disponible à tout moment
+    skipBtn.addEventListener('click', goToApp);
+
+    // Détection iPhone / iPad (Safari ne déclenche jamais beforeinstallprompt)
+    var isIos = /iphone|ipad|ipod/i.test(navigator.userAgent) &&
+                !window.MSStream;
+
+    // Enregistrement du Service Worker (nécessaire pour l'installation)
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker
+            .register('service-worker.js')
+            .then(function (reg) { console.log('Service Worker enregistré :', reg.scope); })
+            .catch(function (err) { console.error('Erreur Service Worker :', err); });
+    }
+
+    // Le navigateur déclenche cet événement seulement si l'app est
+    // réellement installable (manifest valide, icônes, HTTPS, SW actif)
+    window.addEventListener('beforeinstallprompt', function (event) {
+        event.preventDefault();
+        deferredPrompt = event;
+    });
+
+    window.addEventListener('appinstalled', function () {
+        deferredPrompt = null;
+    });
+
+    installBtn.addEventListener('click', function () {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function () {
+            deferredPrompt = null;
+            // On laisse un court instant avant de continuer vers l'app
+            setTimeout(goToApp, 800);
+        });
+    });
+
+    // Après l'écran de bienvenue, on affiche soit le bouton d'installation,
+    // soit les instructions iPhone, soit rien si l'installation n'est pas
+    // proposable (déjà installée, navigateur non compatible, etc.)
     setTimeout(function () {
-        var button = document.getElementById("openButton");
-        if (button) {
-            button.style.display = "inline-block";
-            document.querySelector(".loading-text").textContent =
-                "L'ouverture prend plus de temps que prévu.";
+        stageLoading.classList.add('hidden');
+
+        if (isIos) {
+            stageIos.classList.remove('hidden');
+        } else if (deferredPrompt) {
+            stageInstall.classList.remove('hidden');
+        } else {
+            // Rien à proposer : on raccourcit l'attente restante
+            clearTimeout(redirectTimer);
+            redirectTimer = setTimeout(goToApp, 1200);
         }
-    }, 4000);
+    }, WELCOME_DURATION);
+})();
 </script>
 
 </body>
