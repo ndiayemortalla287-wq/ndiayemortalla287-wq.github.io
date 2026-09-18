@@ -302,13 +302,35 @@
 
     // Reprend l'utilisateur là où il s'est arrêté la dernière fois,
     // au lieu de toujours ouvrir la page d'accueil.
+    //
+    // Priorité :
+    //   1. Paramètre "next" envoyé par index.php (page exacte d'origine)
+    //   2. Dernière page visitée (localStorage)
+    //   3. Page d'accueil par défaut
     function getRedirectTarget() {
+        // 1. Priorité absolue : le paramètre "next" (contient la page
+        //    exacte d'où vient l'utilisateur, ex: ?page=org&slug=teranga)
+        try {
+            var next = new URLSearchParams(window.location.search).get('next');
+            if (next) {
+                var u = new URL(next);
+                // Sécurité : on n'accepte QUE les URLs de notre propre site
+                if (u.origin === 'https://assotranga.page.gd') {
+                    u.searchParams.set('pwaWelcome', '1');
+                    return u.toString();
+                }
+            }
+        } catch (e) {}
+
+        // 2. Sinon, on reprend la dernière page visitée
         try {
             var saved = localStorage.getItem(LAST_PAGE_KEY);
             if (saved && saved.indexOf("https://assotranga.page.gd") === 0) {
                 return saved;
             }
         } catch (e) {}
+
+        // 3. Dernier recours : la page d'accueil
         return APP_URL;
     }
 
