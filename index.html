@@ -298,14 +298,61 @@
 <script>
 (function () {
     var APP_URL = "https://assotranga.page.gd/?pwaWelcome=1";
+    var APP_ORIGIN = "https://assotranga.page.gd";
     var LAST_PAGE_KEY = "terangaLastPage";
+    var BRIDGE_URL = APP_ORIGIN + "/pwa-bridge.html";
+    var BRIDGE_TIMEOUT = 700; // ms d'attente max pour la réponse de la passerelle
+
+    // La dernière page connue, transmise par la page "pont" hébergée
+    // sur assotranga.page.gd (voir pwa-bridge.html). On ne peut pas lire
+    // le localStorage de l'application directement depuis ce domaine
+    // (GitHub Pages) : les navigateurs isolent le stockage par domaine.
+    // La passerelle nous l'envoie via postMessage, qui lui, fonctionne
+    // entre domaines différents.
+    var lastPageFromBridge = null;
+    var bridgeResolved = false;
+    var bridgeReadyCallbacks = [];
+
+    function onBridgeReady(cb) {
+        if (bridgeResolved) { cb(); } else { bridgeReadyCallbacks.push(cb); }
+    }
+
+    function resolveBridge() {
+        if (bridgeResolved) return;
+        bridgeResolved = true;
+        bridgeReadyCallbacks.forEach(function (cb) { cb(); });
+        bridgeReadyCallbacks = [];
+    }
+
+    window.addEventListener('message', function (event) {
+        if (event.origin !== APP_ORIGIN) return;
+        if (event.data && event.data.type === 'terangaLastPage') {
+            lastPageFromBridge = event.data.url || null;
+            resolveBridge();
+        }
+    });
+
+    (function loadBridge() {
+        try {
+            var frame = document.createElement('iframe');
+            frame.style.display = 'none';
+            frame.setAttribute('aria-hidden', 'true');
+            frame.src = BRIDGE_URL;
+            document.body.appendChild(frame);
+        } catch (e) {
+            resolveBridge();
+        }
+        // Filet de sécurité : si la passerelle ne répond pas à temps
+        // (page absente, hors-ligne, etc.), on continue sans elle.
+        setTimeout(resolveBridge, BRIDGE_TIMEOUT);
+    })();
 
     // Reprend l'utilisateur là où il s'est arrêté la dernière fois,
     // au lieu de toujours ouvrir la page d'accueil.
     //
     // Priorité :
     //   1. Paramètre "next" envoyé par index.php (page exacte d'origine)
-    //   2. Dernière page visitée (localStorage)
+    //   2. Dernière page visitée, transmise par la passerelle pwa-bridge.html
     //   3. Page d'accueil par défaut
     function getRedirectTarget() {
         // 1. Priorité absolue : le paramètre "next" (contient la page
@@ -315,20 +362,17 @@
             if (next) {
                 var u = new URL(next);
                 // Sécurité : on n'accepte QUE les URLs de notre propre site
-                if (u.origin === 'https://assotranga.page.gd') {
+                if (u.origin === APP_ORIGIN) {
                     u.searchParams.set('pwaWelcome', '1');
                     return u.toString();
                 }
             }
         } catch (e) {}
 
-        // 2. Sinon, on reprend la dernière page visitée
-        try {
-            var saved = localStorage.getItem(LAST_PAGE_KEY);
-            if (saved && saved.indexOf("https://assotranga.page.gd") === 0) {
-                return saved;
-            }
-        } catch (e) {}
+        // 2. Sinon, on reprend la dernière page visitée (transmise par la passerelle)
+        if (lastPageFromBridge && lastPageFromBridge.indexOf(APP_ORIGIN) === 0) {
+            return lastPageFromBridge;
+        }
 
         // 3. Dernier recours : la page d'accueil
         return APP_URL;
@@ -359,7 +403,13 @@
     function goToApp() {
         if (redirected) return;
         redirected = true;
-        window.location.replace(getRedirectTarget());
+        // On attend au maximum BRIDGE_TIMEOUT que la passerelle ait
+        // répondu avant de calculer la cible finale, pour être sûr de
+        // ne pas rediriger vers l'accueil par erreur si la réponse
+        // arrive juste après.
+        onBridgeReady(function () {
+            window.location.replace(getRedirectTarget());
+        });
     }
 
     // Si le logo ne se charge pas, on affiche les initiales à la place
